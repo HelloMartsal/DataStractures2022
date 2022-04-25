@@ -3,84 +3,86 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int csvr(Database *a){
+void csvr(Database a){
     FILE* fl;
     char bit;
-    //fl = fopen("D:\\panepistimio\\e3\\DataStructures2022\\DataStructures2022\\cmake-build-debug\\ocean.csv","r");
-    fl = fopen("/mnt/d/panepistimio/e3/DataStructures2022/DataStructures2022/ocean.csv","r"); //opens file
-    if (fl == NULL){                                                                                         //checks for exceptions
+    fl = fopen("D:\\panepistimio\\e3\\DataStructures2022\\DataStructures2022\\ocean.csv","r");
+    if (fl == NULL){
         printf("File is not accesible \n");
-        return -1;
+        return;
     }
-    fscanf(fl, "%*[^\n]\n");  //skips the first line
+    fscanf(fl, "%*[^\n]\n");
     int counter1 = 0; // counter for the rows
     int counter2; // counter for the columns
     int counter3; // counter for the characters
-    char** temp2;
     do{
-        int size3 = counter1 + 1;                                               //we increase the number of rows by one and add the necessary columns
-        float **temp1;
-        temp1 =realloc(a->readings,sizeof(float*)*size3);
-        if(temp1 == NULL){
-            printf("realloc didn't work");
-            free(a->readings);
-            return -1;
-        }else {
-            a->readings = temp1;
-            a->readings[counter1] =(float*) malloc(sizeof(float)*7);
-        }
-        for (counter2 = 0; counter2<8; counter2++){
-            int size = 0;                           //counter for the size of the buffer array
-            char* buff = NULL;//buffer
-            counter3 = 0; // counter for indexing the buffer
-            do{
-                size = counter3+1; //increment the counter for the size of the buffer
-                char *temp;
-                temp =realloc(buff,sizeof(char)*size);
-                if(temp == NULL){
-                    printf("realloc didn't work");
-                    free(buff);
-                    return -1;
-                }else {
-                    buff = temp;
-                }
+        counter2 = 0;
+        for (counter2 =0; counter2 <8; counter2++){ //loop for the columns
+            int size = 0;
+            char* buff = (char*)malloc(sizeof(char)); //buffer
+            counter3 = 0; // counter for the buff
+            int flag = 0;
+            while (flag == 0){
                 bit = fgetc(fl);
-                if (bit == ',' || bit == '\n'){ //when we reach the end of a cell we add '\0' and break
-                    buff[counter3] = '\0';
+                if (bit == ',' || bit == '\n'){
                     break;
                 }
                 buff[counter3] = bit;
+                if (counter3 == 0){
+                    size = 2;
+                }else{
+                    size = counter3+2;
+                }
+                buff =realloc(buff,sizeof(char)*size);
                 counter3++;
-            }while(bit != EOF);
-
+                if (bit == EOF || bit == '\n'){
+                    flag = 1;
+                }
+            }
             int datef;
-            if (counter2 == 0){  //if it's a date cell then we call daternf function
-                int size2 = counter1+1;
-                int *temp3;
-                temp3 =realloc(a->dates,sizeof(int)*size2);
-                if(temp3 == NULL){
-                    printf("realloc didn't work");
-                    free(a->dates);
-                    return -1;
-                }else {
-                    a->dates = temp3;
+            if (counter2 == 0){
+                int size2;
+                if (counter1 == 0){
+                    size2 = 2;
+                }else{
+                    size2 = counter1+2;
                 }
                 datef = daternf(buff);
-                a->dates[counter1] = datef;
+                a.dates[counter1] = datef;
+                a.dates = realloc(a.dates,sizeof(int*)*size2);
                 continue;
             }
-
-            a->readings[counter1][counter2-1] = atof(buff);
+            float test = atof(buff);
+            a.readings[counter1][counter2-1] = atof(buff);
+            float te = a.readings[counter1][1];
             free(buff);
         }
         counter1++;
+        int size2 = counter1 + 2;
+        a.readings = realloc(a.readings,sizeof(float*)*size2);
+        a.readings[counter1] =(float*)malloc(sizeof(float) * 7);
 
     }while (bit != EOF);
-    fclose(fl);
-    zeromode(counter1,a);
-    print(counter1,a);
-    return counter1;
+    print(counter1 , a );
 }
+/*void csvr(Database a){
+    FILE *fl;
+    fl = fopen("D:\\panepistimio\\e3\\DataStructures2022\\DataStructures2022\\ocean.csv","r");
+    int counter = 0;
+    int counter2;
+    int flag = 0;
+    char bit;
+    fscanf(fl, "%*[^\n]\n"); //skip the first line
+    do{
+        counter2 = 0;
+        while(counter2<6){
+            while (bit !=','){
+                bit = fgetc(fl);
+
+            }
+        }
+    }while (flag !=1);
+}*/
 
 int daternf(char* b){
     int date;
@@ -88,71 +90,44 @@ int daternf(char* b){
     char m[3];
     char y[9];
 
-
-    strncpy(m,b,2);
-    m[2] = '\0';
-    strncpy(d,b+3,2);
+    strncpy(d,b,2);
     d[2] = '\0';
+    strncpy(m,b+3,2);
+    m[2] = '\0';
     strncpy(y,b+6,4);
-    y[4] = '\0';
+    y[8] = '\0';
     strcat(y,m);
     strcat(y,d);
-    date = atoi(y);   //format of the data: yyyymmdd
+    date = atoi(y);
+    float test = date;
+    int test2 = 1234567890;
+
+
 
     return date;
 }
-void print(int c,Database *a){ //this function is for testing
-    for (int i = 0;i<c-1;i++){
-        printf("%d ",a->dates[i]);
+
+float zeromode(float c){
+    int mV = 0;
+    int count = 0;
+    int mC = 0;
+    int i,j;
+
+}
+
+float cellread(FILE **fl,int *flag,int d){
+    char bit;
+    bit = fgetc(*fl);
+    *flag = 1;
+    return 10.00;
+}
+
+void print(int c,Database a){
+    for (int i = 0;i<=c;i++){
         for (int j = 0; j<7;j++){
-            printf("%f ",a->readings[i][j]);
+            printf("%f",a.readings[i][j]);
         }
         printf("\n");
     }
 }
-
-void zeromode(int n,Database *a){
-    int i,j,k,mode;
-    int max = 0;
-    float modef = 0;
-    int indx[1405];
-    int count;
-
-    for(i=0; i<7; i++){
-        count = 0;
-        max = 0;
-        for (j=0; j<n-1; j++){
-            if (a->readings[j][i] == 0.0){
-                indx[count] = j;
-                count++;
-                continue;
-            }
-            mode = 1;
-            for(k=j; k<n-1; k++){
-                if(a->readings[j][i] == a->readings[k][i] && j!= k){
-                    mode++;
-                }
-            }
-            if (mode > max){
-                int test = a->readings[j][i];
-                modef = a->readings[j][i];
-                max = mode;
-            }
-        }
-        int l;
-        for (l=0; l<count; l++){
-            a->readings[indx[l]][i] = modef;
-        }
-    }
-}
-
-void freeData(int c, Database *a){
-    free(a->dates);
-    int i;
-    for (i=0; i<c; i++){
-        free(a->readings[i]);
-    }
-    free(a->readings);
-}
-
 

@@ -1,16 +1,16 @@
 #include <stdio.h>
 
-struct database{     //This struct is our database
+struct database{
     int* dates;
     float** readings;
 
 };
 typedef struct database Database;
-extern int csvr(Database *); //This is the csv reader. It creates an array and places the formatted data in it
-extern int daternf (char*); //this function creates an integer out of the date that we can then sort and index easily
-extern void zeromode (int,Database *); // This function finds the mode of the columns and inputs it in the cell with 0s in them
-extern void print(int , Database*);
-extern void freeData(int ,Database*); //This function frees the m
+extern void csvr(Database); //This is the csv reader. It creates an array and places the formatted data in it
+extern int daternf (char*); // This function read and formats the date
+extern float zeromode (float); // THis function finds the mode of the columns
+extern float cellread(FILE**,int*,int); //read all thhe characters in a cell
+extern void print(int , Database);
 
 
 

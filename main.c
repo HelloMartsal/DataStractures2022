@@ -3,15 +3,14 @@
 #include <math.h>
 #include <string.h>
 #include "csvrnf.h"
-#include "float.h"
 
 
 int main (){
     Database oceans;
-    oceans.dates = malloc(sizeof (int));
-    oceans.readings =malloc(sizeof(float*));
-    Database *ocean = &oceans;
-    int size = csvr(ocean);
-    freeData(size, ocean);
+    oceans.dates = (int*) malloc(sizeof(int));
+    oceans.readings = (float**)malloc(sizeof(float*));
+    oceans.readings[0] = (float*) malloc(sizeof(float) * 7);
+    csvr(oceans);
+    printf ("hello world");
     return 0;
 }
