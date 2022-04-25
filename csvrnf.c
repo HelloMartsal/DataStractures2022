@@ -16,7 +16,6 @@ int csvr(Database *a){
     int counter1 = 0; // counter for the rows
     int counter2; // counter for the columns
     int counter3; // counter for the characters
-    char** temp2;
     do{
         int size3 = counter1 + 1;                                               //we increase the number of rows by one and add the necessary columns
         float **temp1;
@@ -30,7 +29,7 @@ int csvr(Database *a){
             a->readings[counter1] =(float*) malloc(sizeof(float)*7);
         }
         for (counter2 = 0; counter2<8; counter2++){
-            int size = 0;                           //counter for the size of the buffer array
+            int size;                           //counter for the size of the buffer array
             char* buff = NULL;//buffer
             counter3 = 0; // counter for indexing the buffer
             do{
@@ -113,7 +112,7 @@ void print(int c,Database *a){ //this function is for testing
 
 void zeromode(int n,Database *a){
     int i,j,k,mode;
-    int max = 0;
+    int max;
     float modef = 0;
     int indx[1405];
     int count;
@@ -134,7 +133,6 @@ void zeromode(int n,Database *a){
                 }
             }
             if (mode > max){
-                int test = a->readings[j][i];
                 modef = a->readings[j][i];
                 max = mode;
             }
@@ -154,5 +152,3 @@ void freeData(int c, Database *a){
     }
     free(a->readings);
 }
-
-
