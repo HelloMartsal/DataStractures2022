@@ -116,6 +116,7 @@ void zeromode(int n,Database *a){
     float modef = 0;
     int indx[1405];
     int count;
+
     for(i=0; i<7; i++){
         count = 0;
         max = 0;
