@@ -77,7 +77,6 @@ int csvr(Database *a){
     }while (bit != EOF);
     fclose(fl);
     zeromode(counter1,a);
-    print(counter1,a);
     return counter1;
 }
 
@@ -144,11 +143,24 @@ void zeromode(int n,Database *a){
     }
 }
 
-void freeData(int c, Database *a){
+void freeData(int c, Database *a){ //TODO DES TO TODO
     free(a->dates);
     int i;
     for (i=0; i<c; i++){
         free(a->readings[i]);
     }
     free(a->readings);
+}
+
+void copyData(Database *a, Database *b){
+    b->size = a->size;
+    b->dates = malloc(sizeof (int)*b->size);
+    b->readings = malloc(sizeof (float*)*b->size);
+    for (int i = 0; i<b->size-1; i++){
+        b->dates[i] = a->dates[i];
+        b->readings[i] = malloc(sizeof (float)*7);
+        for (int j = 0; j<7; j++){
+            b->readings[i][j] = a->readings[i][j];
+        }
+    }
 }

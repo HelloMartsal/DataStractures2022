@@ -8,4 +8,6 @@ include_directories(.)
 add_executable(DataStructures2022
         csvrnf.c
         csvrnf.h
+        sortalgos.c
+        sortlagos.h
         main.c)
