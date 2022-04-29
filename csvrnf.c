@@ -6,8 +6,8 @@
 int csvr(Database *a){
     FILE* fl;
     char bit;
-    //fl = fopen("D:\\panepistimio\\e3\\DataStructures2022\\DataStructures2022\\cmake-build-debug\\ocean.csv","r");
-    fl = fopen("/mnt/d/panepistimio/e3/DataStructures2022/DataStructures2022/ocean.csv","r"); //opens file
+    fl = fopen("D:\\panepistimio\\e3\\DataStructures2022\\DataStructures2022\\ocean.csv","r");
+    //fl = fopen("/mnt/d/panepistimio/e3/DataStructures2022/DataStructures2022/ocean.csv","r"); //opens file
     if (fl == NULL){                                                                                         //checks for exceptions
         printf("File is not accesible \n");
         return -1;
@@ -76,7 +76,7 @@ int csvr(Database *a){
 
     }while (bit != EOF);
     fclose(fl);
-    zeromode(counter1,a);
+    zeromode(a,counter1);
     return counter1;
 }
 
@@ -99,8 +99,8 @@ int daternf(char* b){
 
     return date;
 }
-void print(int c,Database *a){ //this function is for testing
-    for (int i = 0;i<c-1;i++){
+void print(Database *a){ //this function is for testing
+    for (int i = 0;i<a->size-1;i++){
         printf("%d ",a->dates[i]);
         for (int j = 0; j<7;j++){
             printf("%f ",a->readings[i][j]);
@@ -109,7 +109,7 @@ void print(int c,Database *a){ //this function is for testing
     }
 }
 
-void zeromode(int n,Database *a){
+void zeromode(Database *a, int n){
     int i,j,k,mode;
     int max;
     float modef = 0;
@@ -143,10 +143,10 @@ void zeromode(int n,Database *a){
     }
 }
 
-void freeData(int c, Database *a){ //TODO DES TO TODO
+void freeData( Database *a){
     free(a->dates);
     int i;
-    for (i=0; i<c; i++){
+    for (i=0; i<a->size; i++){
         free(a->readings[i]);
     }
     free(a->readings);
